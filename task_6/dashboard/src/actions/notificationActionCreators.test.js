@@ -1,20 +1,61 @@
-import * as notifActionTypes from './notificationActionTypes';
-import * as notifActionCreators from './notificationActionCreators';
+import {
+  MARK_AS_READ,
+  SET_TYPE_FILTER,
+  SET_LOADING_STATE,
+  FETCH_NOTIFICATIONS_SUCCESS,
+  NotificationTypeFilters,
+} from "./notificationActionTypes";
 
-describe('Testing notification Action Creators', () => {
-  it('test makasread action', () => {
-    const expected = {
-      type: notifActionTypes.MARK_AS_READ,
-      index: 1
+import {
+  markAsAread,
+  setNotificationFilter,
+  setLoadingState,
+  setNotifications,
+  fetchNotifications,
+} from "./notificationActionCreators";
+
+describe("action creators tests", function () {
+  it("returns correct action for markAsRead", function () {
+    const expectedReturn = {
+      type: MARK_AS_READ,
+      index: 1,
     };
-    expect(notifActionCreators.markAsAread(1)).toEqual(expected);
+
+    const result = markAsAread(1);
+
+    expect(result).toEqual(expectedReturn);
   });
 
-  it('test setNotificationFilter action', () => {
-    const expected = {
-      type: notifActionTypes.SET_TYPE_FILTER,
-      filter: "DEFAULT"
+  it("returns correct action for setNotificationFilter", function () {
+    const expectedReturn = {
+      type: SET_TYPE_FILTER,
+      filter: "DEFAULT",
     };
-    expect(notifActionCreators.setNotificationFilter(notifActionTypes.NotificationTypeFilters.DEFAULT)).toEqual(expected);
+
+    const result = setNotificationFilter(NotificationTypeFilters.DEFAULT);
+
+    expect(result).toEqual(expectedReturn);
+  });
+  it("returns correct action for setLoadingState", function () {
+    const expectedReturn = {
+      type: SET_LOADING_STATE,
+      loading: true,
+    };
+
+    const result = setLoadingState(true);
+
+    expect(result).toEqual(expectedReturn);
+  });
+  it("returns correct action for setNotifications", function () {
+    const data = { 1: { a: "Hello" }, 2: { b: "There" } };
+
+    const expectedReturn = {
+      type: FETCH_NOTIFICATIONS_SUCCESS,
+      data,
+    };
+
+    const result = setNotifications(data);
+
+    expect(result).toEqual(expectedReturn);
   });
 });

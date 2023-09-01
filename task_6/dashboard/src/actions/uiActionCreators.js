@@ -1,32 +1,67 @@
-import * as uiActionTypes from './uiActionTypes';
+import {
+  LOGIN,
+  LOGOUT,
+  DISPLAY_NOTIFICATION_DRAWER,
+  HIDE_NOTIFICATION_DRAWER,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+} from "./uiActionTypes";
 
-export function login(email, password) {
+import "node-fetch";
+
+export const login = (email, password) => {
   return {
-    type: uiActionTypes.LOGIN,
-    user: {email, password}
+    type: LOGIN,
+    user: { email, password },
   };
-}
+};
+
 export const boundLogin = (email, password) => dispatch(login(email, password));
 
-export function logout() {
+export const logout = () => {
   return {
-    type: uiActionTypes.LOGOUT
+    type: LOGOUT,
   };
-}
+};
+
 export const boundLogout = () => dispatch(logout());
 
-export function displayNotificationDrawer() {
+export const displayNotificationDrawer = () => {
   return {
-    type: uiActionTypes.DISPLAY_NOTIFICATION_DRAWER
+    type: DISPLAY_NOTIFICATION_DRAWER,
   };
-}
+};
+
 export const boundDisplayNotificationDrawer = () =>
   dispatch(displayNotificationDrawer());
 
-export function hideNotificationDrawer() {
+export const hideNotificationDrawer = () => {
   return {
-    type: uiActionTypes.HIDE_NOTIFICATION_DRAWER
+    type: HIDE_NOTIFICATION_DRAWER,
   };
-}
+};
+
 export const boundHideNotificationDrawer = () =>
   dispatch(hideNotificationDrawer());
+
+export const loginSuccess = () => {
+  return {
+    type: LOGIN_SUCCESS,
+  };
+};
+
+export const loginFailure = () => {
+  return {
+    type: LOGIN_FAILURE,
+  };
+};
+
+export const loginRequest = (email, password) => {
+  return (dispatch) => {
+    dispatch(login(email, password));
+    return fetch("http://localhost:8564/login-success.json")
+      .then((res) => res.json())
+      .then((json) => dispatch(loginSuccess()))
+      .catch((error) => dispatch(loginFailure()));
+  };
+};
